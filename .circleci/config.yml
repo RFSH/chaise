@@ -36,7 +36,6 @@ commands:
           name: initalize
           command: |
             lsb_release -a
-            sudo apt-get -y update
             export TZ=America/Los_Angeles
             export PATH="$(systemd-path user-binaries):$PATH"
       - run:
@@ -45,6 +44,7 @@ commands:
             sudo apt-get -y purge postgresql-9.1 postgresql-9.2 postgresql-9.3 postgresql-9.4 postgresql-9.5 postgresql-9.6 || true
             wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
             sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" > /etc/apt/sources.list.d/PostgreSQL.list'
+            sudo apt-get -y update
             sudo apt-get install postgresql-10
             sudo service postgresql start 10
       - run:
