@@ -16,10 +16,12 @@ jobs:
 
 executors:
   main-exec:
-    docker:
-      - image: circleci/node:10
-      - image: circleci/postgres:10
-      #image: ubuntu-1604:202010-01
+    machine:
+      image: ubuntu-1604:202010-01
+    # docker:
+    #   - image: circleci/node:10
+    #   - image: circleci/postgres:10
+ 
     environment:
       COOKIES: ~/cookies
       VERBOSE: brief
@@ -38,7 +40,9 @@ commands:
             sudo su -c 'echo /usr/lib/python3.5/site-packages > /usr/local/lib/python3.5/dist-packages/sys-site-packages.pth'
             sudo ln -s /etc/apache2/conf-enabled /etc/apache2/conf.d
             sudo service postgresql stop || true
+            sudo apt-get -y update
             sudo apt-get -y purge postgresql-9.1 postgresql-9.2 postgresql-9.3 postgresql-9.4 postgresql-9.5 postgresql-9.6 || true
+            sudo apt-get install postgresql-10
             sudo service postgresql start 10
             sudo a2enmod ssl
             sudo a2ensite default-ssl
