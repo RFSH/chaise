@@ -1,0 +1,46 @@
+version: 2.1
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - main-job
+
+jobs:
+  main-job:
+    executor: main-exec
+    steps:
+      - checkout
+      - configure-system
+
+executors:
+  main-exec:
+    machine:
+      image: ubuntu-1604:202010-01
+    environment:
+      COOKIES: ~/cookies
+      VERBOSE: brief
+      HTTPD_ERROR_LOG: /var/log/apache2/error.log
+      CHAISE_BASE_URL: http://localhost/chaise
+      ERMREST_URL: http://localhost/ermrest
+      SHARDING: "true"
+
+commands:
+  configure-system:
+    steps:
+        - run: export TZ=America/Los_Angeles
+        - run: export PATH="$(systemd-path user-binaries):$PATH"
+        - run: sudo su -c 'echo /usr/lib/python3.5/site-packages > /usr/local/lib/python3.5/dist-packages/sys-site-packages.pth'
+        - run: sudo ln -s /etc/apache2/conf-enabled /etc/apache2/conf.d
+        - run: sudo service postgresql stop
+        - run: sudo apt-get -y purge postgresql-9.1 postgresql-9.2 postgresql-9.3 postgresql-9.4 postgresql-9.5 postgresql-9.6
+        - run: sudo service postgresql start 10
+        - run: sudo a2enmod ssl
+        - run: sudo a2ensite default-ssl
+        - run: sudo groupadd -o -g $(id -g www-data) apache
+        - run: sudo pip3 --version
+        - run: sudo su -c 'python3 -c "import site;print(site.PREFIXES);"'
+        - run: sudo su -c 'python3 -c "import site;print(site.getsitepackages())"'
+        - run: sudo pip3 install requests
+        - run: sudo pip3 install psycopg2-binary
+        - run: sudo pip3 install git+https://github.com/informatics-isi-edu/webpy.git
