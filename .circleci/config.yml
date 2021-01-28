@@ -28,19 +28,21 @@ executors:
 commands:
   configure-system:
     steps:
-        - run: export TZ=America/Los_Angeles
-        - run: export PATH="$(systemd-path user-binaries):$PATH"
-        - run: sudo su -c 'echo /usr/lib/python3.5/site-packages > /usr/local/lib/python3.5/dist-packages/sys-site-packages.pth'
-        - run: sudo ln -s /etc/apache2/conf-enabled /etc/apache2/conf.d
-        - run: sudo service postgresql stop
-        - run: sudo apt-get -y purge postgresql-9.1 postgresql-9.2 postgresql-9.3 postgresql-9.4 postgresql-9.5 postgresql-9.6
-        - run: sudo service postgresql start 10
-        - run: sudo a2enmod ssl
-        - run: sudo a2ensite default-ssl
-        - run: sudo groupadd -o -g $(id -g www-data) apache
-        - run: sudo pip3 --version
-        - run: sudo su -c 'python3 -c "import site;print(site.PREFIXES);"'
-        - run: sudo su -c 'python3 -c "import site;print(site.getsitepackages())"'
-        - run: sudo pip3 install requests
-        - run: sudo pip3 install psycopg2-binary
-        - run: sudo pip3 install git+https://github.com/informatics-isi-edu/webpy.git
+        - run: 
+            command: |
+              export TZ=America/Los_Angeles
+              export PATH="$(systemd-path user-binaries):$PATH"
+              sudo su -c 'echo /usr/lib/python3.5/site-packages > /usr/local/lib/python3.5/dist-packages/sys-site-packages.pth'
+              sudo ln -s /etc/apache2/conf-enabled /etc/apache2/conf.d
+              sudo service postgresql stop
+              sudo apt-get -y purge postgresql-9.1 postgresql-9.2 postgresql-9.3 postgresql-9.4 postgresql-9.5 postgresql-9.6
+              sudo service postgresql start 10
+              sudo a2enmod ssl
+              sudo a2ensite default-ssl
+              sudo groupadd -o -g $(id -g www-data) apache
+              sudo pip3 --version
+              sudo su -c 'python3 -c "import site;print(site.PREFIXES);"'
+              sudo su -c 'python3 -c "import site;print(site.getsitepackages())"'
+              sudo pip3 install requests
+              sudo pip3 install psycopg2-binary
+              sudo pip3 install git+https://github.com/informatics-isi-edu/webpy.git
