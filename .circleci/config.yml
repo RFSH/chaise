@@ -17,7 +17,7 @@ jobs:
 executors:
   main-exec:
     docker:
-      - image: cimg/node:10
+      - image: circleci/node:10
       - image: circleci/postgres:10
       #image: ubuntu-1604:202010-01
     environment:
