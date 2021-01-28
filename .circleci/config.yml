@@ -14,6 +14,13 @@ jobs:
       - configure-system
       - install-webpy
       - install-webauthn
+      - install-hatrac
+      - install-ermrest
+      - install-nodejs
+      - install-ermrest-data-utils
+      - install-ermrestjs
+      - install-chaise
+      - run-tests
 
 executors:
   main-exec:
@@ -72,7 +79,7 @@ commands:
           command: |
             git clone https://github.com/informatics-isi-edu/webpy.git
             cd webpy
-            sudo pip3 install -e
+            sudo python3 ./setup.py install
             cd ..
       # - run: sudo pip3 install git+https://github.com/informatics-isi-edu/webpy.git
   install-webauthn:
@@ -92,4 +99,71 @@ commands:
             sudo a2enmod webauthn
             sudo service apache2 restart
             cd ..
-
+  install-hatrac:
+    steps:
+      - run:
+          name: Install hatrac
+          command: |
+              git clone https://github.com/informatics-isi-edu/hatrac.git
+              cd hatrac
+              sudo python3 ./setup.py install
+              sudo useradd -m -r hatrac
+              sudo -H -u postgres createuser -d hatrac
+              sudo -H -u postgres psql -c "GRANT webauthn TO hatrac"
+              sudo -H -u hatrac createdb hatrac
+              sudo cp test/hatrac_config.json ~hatrac/
+              sudo -H -u hatrac hatrac-deploy admin
+              sudo su -c 'python3 -c "import hatrac as m;m.sample_httpd_config()"' - hatrac > ../wsgi_hatrac.conf
+              sudo cp ../wsgi_hatrac.conf /etc/apache2/conf.d/wsgi_hatrac.conf
+              sudo mkdir /var/www/hatrac
+              sudo chown hatrac /var/www/hatrac
+              cd ..
+  install-ermrest:
+    steps:
+      - run:
+          name: Install ermrest
+          command: |
+              git clone https://github.com/informatics-isi-edu/ermrest.git
+              cd ermrest
+              sudo -H make install PLATFORM=ubuntu1604
+              sudo which ermrest-deploy
+              sudo -H make deploy PLATFORM=ubuntu1604
+              cd ..
+  install-nodejs:
+    steps:
+      - run:
+          name: Install nodejs
+          command: |
+              curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+              sudo apt-get install -y nodejs
+  install-ermrest-data-utils:
+    steps:
+      - run:
+          name: Install nodejs
+          command: |
+              git clone https://github.com/informatics-isi-edu/ErmrestDataUtils.git
+              cd ErmrestDataUtils
+              sudo npm install
+              cd ..
+  install-ermrestjs:
+    steps:
+      - run:
+          name: Install ermrestjs
+          command: |
+              git clone https://github.com/informatics-isi-edu/ermrestjs.git
+              cd ermrestjs
+              sudo make install
+              cd ../chaise
+              sudo cp test/ermrest_config.json /home/ermrest/
+              sudo chmod a+r /home/ermrest/ermrest_config.json
+  install-chaise:
+    steps:
+      - run:
+          name: Install chaise
+          command: sudo npm install
+  run-tests:
+    steps:
+      - run: make testfullfeaturesconfirmation
+      # - run: make testdefaultconfig
+      # - run: make testfullfeatures
+      # - run: make testdeleteprohibited
