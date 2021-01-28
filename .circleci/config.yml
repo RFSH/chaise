@@ -16,11 +16,9 @@ jobs:
 
 executors:
   main-exec:
-    machine:
-      image: ubuntu-1604:202010-01
-    # docker:
-    #   - image: circleci/node:10
-    #   - image: circleci/postgres:10
+    docker:
+      - image: circleci/node:10
+      - image: circleci/postgres:10
  
     environment:
       COOKIES: ~/cookies
@@ -33,19 +31,16 @@ executors:
 commands:
   configure-system:
     steps:
-      - run: 
+      - run: lsb_release -a
+      - run: export TZ=America/Los_Angeles
+      - run: export PATH="$(systemd-path user-binaries):$PATH"
+      - run: sudo su -c 'echo /usr/lib/python3.5/site-packages > /usr/local/lib/python3.5/dist-packages/sys-site-packages.pth'
+      - run: sudo ln -s /etc/apache2/conf-enabled /etc/apache2/conf.d
+      - run: sudo apt-get -y purge postgresql-9.1 postgresql-9.2 postgresql-9.3 postgresql-9.4 postgresql-9.5 postgresql-9.6 || true
+      - run: sudo service postgresql start 10
+      - run:
+          name: Insatlling other stuff
           command: |
-            export TZ=America/Los_Angeles
-            export PATH="$(systemd-path user-binaries):$PATH"
-            sudo su -c 'echo /usr/lib/python3.5/site-packages > /usr/local/lib/python3.5/dist-packages/sys-site-packages.pth'
-            sudo ln -s /etc/apache2/conf-enabled /etc/apache2/conf.d
-            sudo service postgresql stop || true
-            sudo apt-get -y update
-            sudo apt-get -y purge postgresql-9.1 postgresql-9.2 postgresql-9.3 postgresql-9.4 postgresql-9.5 postgresql-9.6 || true
-            wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-            sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" > /etc/apt/sources.list.d/PostgreSQL.list'
-            sudo apt-get install postgresql-10  
-            sudo service postgresql start 10
             sudo a2enmod ssl
             sudo a2ensite default-ssl
             sudo groupadd -o -g $(id -g www-data) apache
