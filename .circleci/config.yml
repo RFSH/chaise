@@ -55,9 +55,7 @@ commands:
             sudo a2enmod ssl
             sudo a2ensite default-ssl
             sudo groupadd -o -g $(id -g www-data) apache
-      - run: sudo python --version
-      - run: sudo python3 --version
-      - run: sudo pip --version
+      - run: sudo apt-get install python3-pip
       - run: sudo pip3 --version
       - run:
           name: Setup python
