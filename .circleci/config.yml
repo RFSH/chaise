@@ -12,6 +12,7 @@ jobs:
     steps:
       - checkout
       - configure-system
+      - install-webpy
       - install-webauthn
 
 executors:
@@ -54,21 +55,25 @@ commands:
             sudo ln -s /etc/apache2/conf-enabled /etc/apache2/conf.d
             sudo a2enmod ssl
             sudo a2ensite default-ssl
-            sudo groupadd -o -g $(id -g www-data) apache
-      - run: sudo apt-get install python3-pip
-      - run: sudo pip3 --version
+            sudo groupadd -o -g $(id -g www-data) apache 
       - run:
           name: Setup python
           command: |
+            sudo apt-get install python3-pip
             sudo su -c 'echo /usr/lib/python3.5/site-packages > /usr/local/lib/python3.5/dist-packages/sys-site-packages.pth'
             sudo su -c 'python3 -c "import site;print(site.PREFIXES);"'
             sudo su -c 'python3 -c "import site;print(site.getsitepackages())"'
             sudo pip3 install requests
             sudo pip3 install psycopg2-binary
-      - run: git clone https://github.com/informatics-isi-edu/webpy.git
-      - run: cd webpy
-      - run: sudp pip3 install -e
-      - run: cd ..
+  install-webpy:
+    steps:
+      - run: 
+          name: Install webpy
+          command: |
+            git clone https://github.com/informatics-isi-edu/webpy.git
+            cd webpy
+            sudo pip3 install -e
+            cd ..
       # - run: sudo pip3 install git+https://github.com/informatics-isi-edu/webpy.git
   install-webauthn:
     steps:
@@ -86,4 +91,5 @@ commands:
             sudo bash ./test/ubuntu-travis-setup.sh
             sudo a2enmod webauthn
             sudo service apache2 restart
+            cd ..
 
