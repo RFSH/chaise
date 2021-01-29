@@ -63,7 +63,7 @@ commands:
       - run:
           name: Install apache
           command: |
-            sudo apt-get install apache2 libapache2-mod-wsgi
+            sudo apt-get install apache2 apache2-dev ssl-cert libapache2-mod-wsgi-py3
             sudo ln -s /etc/apache2/conf-enabled /etc/apache2/conf.d
             sudo a2enmod ssl
             sudo a2ensite default-ssl
@@ -71,7 +71,8 @@ commands:
       - run:
           name: Setup python
           command: |
-            sudo su -c 'echo /usr/lib/python/site-packages > /usr/local/lib/python/dist-packages/sys-site-packages.pth'
+            sudo apt-get install apache2 apache2-dev ssl-cert libapache2-mod-wsgi-py3
+            sudo su -c 'echo /usr/lib/python3.5.9/site-packages > /usr/local/lib/python3.5.9/dist-packages/sys-site-packages.pth'
             sudo su -c 'python -c "import site;print(site.PREFIXES);"'
             sudo su -c 'python -c "import site;print(site.getsitepackages())"'
             sudo pip install requests
