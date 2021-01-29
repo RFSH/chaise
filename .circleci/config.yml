@@ -16,7 +16,7 @@ jobs:
       - install-webauthn
       - install-hatrac
       - install-ermrest
-      - install-nodejs
+      # - install-nodejs
       - install-ermrest-data-utils
       - install-ermrestjs
       - install-chaise
@@ -24,11 +24,11 @@ jobs:
 
 executors:
   main-exec:
-    # docker:
-    #   - image: circleci/node:10
-    #   - image: circleci/postgres:10
-    machine:
-      image: ubuntu-1604:202010-01
+    docker:
+      - image: circleci/node:7.10.1
+      - image: circleci/postgres:10
+    # machine:
+    #   image: ubuntu-1604:202010-01
     environment:
       COOKIES: ~/cookies
       VERBOSE: brief
@@ -43,18 +43,18 @@ commands:
       - run: 
           name: Initalize
           command: |
-            lsb_release -a
+            lsb_release -a || true
             export TZ=America/Los_Angeles
             export PATH="$(systemd-path user-binaries):$PATH"
       - run:
           name: Install postgresql-10
           command: |
-            sudo apt-get -y purge postgresql-9.1 postgresql-9.2 postgresql-9.3 postgresql-9.4 postgresql-9.5 postgresql-9.6 || true
-            wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-            sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" > /etc/apt/sources.list.d/PostgreSQL.list'
-            sudo apt-get -y update
-            sudo apt-get install postgresql-10
-            sudo service postgresql start 10
+            sudo service postgresql start 10 || true
+          # sudo apt-get -y purge postgresql-9.1 postgresql-9.2 postgresql-9.3 postgresql-9.4 postgresql-9.5 postgresql-9.6 || true
+          #   wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          #   sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" > /etc/apt/sources.list.d/PostgreSQL.list'
+          #   sudo apt-get -y update
+          #   sudo apt-get install postgresql-10
       - run:
           name: Install apache
           command: |
