@@ -77,10 +77,11 @@ commands:
       - run: 
           name: Install webpy
           command: |
-            git clone https://github.com/informatics-isi-edu/webpy.git
-            cd webpy
-            sudo python3 ./setup.py install
-            cd ..
+            sudo pip3 install git+https://github.com/informatics-isi-edu/webpy.git
+      # git clone https://github.com/informatics-isi-edu/webpy.git
+      # cd webpy
+      # sudo python3 ./setup.py install
+      # cd ..
       # - run: sudo pip3 install git+https://github.com/informatics-isi-edu/webpy.git
   install-webauthn:
     steps:
