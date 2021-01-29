@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - configure-system
-      - install-webpy
+      - run: sudo pip3 install git+https://github.com/informatics-isi-edu/webpy.git
       - install-webauthn
       - install-hatrac
       - install-ermrest
