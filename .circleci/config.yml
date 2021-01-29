@@ -72,11 +72,11 @@ commands:
           name: Setup python
           command: |
             sudo apt-get install apache2 apache2-dev ssl-cert libapache2-mod-wsgi-py3
-            sudo su -c 'echo /usr/lib/python3.5.9/site-packages > /usr/local/lib/python3.5.9/dist-packages/sys-site-packages.pth'
             sudo su -c 'python -c "import site;print(site.PREFIXES);"'
             sudo su -c 'python -c "import site;print(site.getsitepackages())"'
             sudo pip install requests
             sudo pip install psycopg2-binary
+          # sudo su -c 'echo /usr/lib/python3.5.9/site-packages > /usr/local/lib/python3.5.9/dist-packages/sys-site-packages.pth'
           # sudo apt-get install python3-pip
   install-webpy:
     steps:
