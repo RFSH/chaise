@@ -182,7 +182,6 @@ test: test-ALL_TESTS
 
 # HTML files that need to be created
 HTML=login/index.html \
-	 recordset/index.html \
 	 viewer/index.html \
 	 recordedit/index.html \
 	 record/index.html \
@@ -195,7 +194,6 @@ HTML=login/index.html \
 MIN=$(DIST)/$(SHARED_JS_VENDOR_ASSET_MIN) \
 	$(DIST)/$(SHARED_JS_SOURCE_MIN) \
 	$(DIST)/$(RECORD_JS_SOURCE_MIN) \
-	$(DIST)/$(RECORDSET_JS_SOURCE_MIN) \
 	$(DIST)/$(RECORDEDIT_JS_SOURCE_MIN) \
 	$(DIST)/$(VIEWER_JS_SOURCE_MIN) \
 	$(DIST)/$(LOGIN_JS_SOURCE_MIN) \
@@ -590,7 +588,7 @@ $(MODULES): package.json
 # Rule to create the package.
 # - we have to make sure the npm dependencies required for build are installed.
 # - we have to clean all the dist files because we need to generate new ones.
-$(DIST): print_variables npm_install_prod_modules $(SASS) $(MIN) $(HTML) gitversion
+$(DIST): print_variables npm_install_prod_modules $(SASS) $(MIN) $(HTML) buildangular gitversion
 
 # build version will change everytime make all or install is called
 $(BUILD_VERSION):
@@ -624,7 +622,9 @@ all: $(DIST)
 .PHONY: install dont_install_in_root
 install: $(DIST) dont_install_in_root
 	$(info - deploying the package)
-	@rsync -avz --exclude='.*' --exclude='docs' --exclude='test' --exclude='$(MODULES)' --exclude='$(JS_CONFIG)' --exclude='$(VIEWER_CONFIG)' . $(CHAISEDIR)
+	rsync -avz $(DIST)/angular/ $(CHAISEDIR)
+	$(info - angular apps installed)
+	rsync -avz --exclude-from='.rsync-exclude' . $(CHAISEDIR)
 
 # Rule for installing during testing (build chaise and deploy with the chaise-config)
 .PHONY: install-w-config dont_install_in_root
@@ -656,6 +656,10 @@ print_variables:
 	$(info ERMrestJS must already be installed and accesible using: $(ERMRESTJS_BASE_PATH))
 	$(info If using viewer, OSD viewer must already be installed and accesible using: $(OSD_VIEWER_BASE_PATH))
 	$(info =================)
+
+buildangular:
+	$(info - building Angular apps)
+	@ng build recordset --base-href=$(CHAISE_BASE_PATH)recordset/ --output-path=$(DIST)/angular/recordset
 
 # Rules for help/usage
 .PHONY: help usage

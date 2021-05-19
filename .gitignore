@@ -1,37 +1,72 @@
-*~
-#*
-*.swp
-.DS_Store*
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+# Only exists if Bazel was run
+/bazel-out
+
+# dependencies
+/node_modules
+
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
+# IDEs and editors
+/.idea
 .project
-._*
-.Spotlight-V100
-.Trashes
-.idea
-.idea/
-.vscode
-ehthumbs.db
-Thumbs.db
-bower_components
-node_modules
-dist
-deployment-config.json
-.make-*
-index.html
-/chaise-config.js
-viewer/viewer-config.js
-sftp-config.json
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
 npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+*.swp
+._*
+
+# chaise specific
+
+.make-*
 version.txt
-mdHelp.html
-# ignore uploaded files
-test/e2e/data_setup/uploaded_files/*.*
-package-lock.json
+
+# testing
 entities.json
+test/e2e/data_setup/uploaded_files/*.*
+
+# compiled html file
+/record/index.html
+/recordset/index.html
+/recordedit/index.html
+/recordedit/mdHelp.html
+/help/index.html
+/login/index.html
+/viewer/index.html
 lib/switchUserAccounts.html
 
-# the compiled css files
+# compiled css files
 common/styles/app.css
 common/styles/navbar.css
-
-# sass temporary compiled files
-.sass-cache

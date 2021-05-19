@@ -1,0 +1,8 @@
+.*
+docs
+test
+node_modules
+chaise-config.js
+viewer-config.js
+projects
+/dist/angular

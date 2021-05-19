@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" id="recordset">
+    <head>
+        <title>Record Set</title>
+        <meta charset="UTF-8">
+        <script src="/gtm-id.js"></script>
+<link rel='stylesheet' type='text/css' href='/~ashafaei/chaise/styles/vendor/bootstrap.min.css?v=20210518124108'>
+<link rel='stylesheet' type='text/css' href='/~ashafaei/chaise/styles/vendor/fontawesome.min.css?v=20210518124108'>
+<link rel='stylesheet' type='text/css' href='/~ashafaei/chaise/common/vendor/spectrum/spectrum.min.css?v=20210518124108'>
+<link rel='stylesheet' type='text/css' href='/~ashafaei/chaise/common/styles/app.css?v=20210518124108'>
+<script src='/~ashafaei/chaise/scripts/vendor/jquery-3.4.1.min.js?v=20210518124108'></script>
+<script src='/~ashafaei/chaise/scripts/vendor/angular.js?v=20210518124108'></script>
+<script src='/~ashafaei/chaise/scripts/vendor/bootstrap-3.3.7.min.js?v=20210518124108'></script>
+<script src='/~ashafaei/chaise/scripts/vendor/plotly-latest.min.js?v=20210518124108'></script>
+<script src='/~ashafaei/chaise/dist/chaise.vendor.min.js?v=20210518124108'></script>
+<script src='/~ashafaei/chaise/chaise-config.js?v=20210518124108'></script>
+<script src='/~ashafaei/chaise/dist/chaise.min.js?v=20210518124108'></script>
+<script src='/~ashafaei/chaise/dist/recordset.min.js?v=20210518124108'></script>
+<script src='/~ashafaei/ermrestjs/ermrest.vendor.min.js?v=20210518124108'></script>
+<script src='/~ashafaei/ermrestjs/ermrest.min.js?v=20210518124108'></script>
+    </head>
+    <body class="chaise-body">
+        <div class="configure-container" ng-app="chaise.configure-recordset">
+            <loading-spinner></loading-spinner>
+        </div>
+        <div class="app-container rs_s_{{makeSafeIdAttr(vm.schemaName)}} rs_t_{{makeSafeIdAttr(vm.tableName)}}" ng-controller="recordsetController as ctrl">
+            <navbar></navbar>
+            <recordset vm="vm"></recordset>
+        </div>
+    </body>
+</html>
+<noscript>
+    <div modal-render="true" tabindex="-1" role="dialog" class="modal fade in" index="0" animate="animate" modal-animation="true" style="z-index: 1050; display: block;">
+        <div class="modal-dialog">
+            <div class="modal-content" uib-modal-transclude="">
+                <div class="modal-header">
+                    <h2 class="modal-title ">JavaScript Required</h2>
+                </div>
+                <div class="modal-body ">
+                    For full functionality of this site it is necessary to enable JavaScript.
+                    <br>
+                    Here are <a href="http://www.enable-javascript.com/" target="_blank">instructions how to enable JavaScript in your web browser</a>.
+                    <br><br>
+                    Click OK to return to the Home Page.
+                </div>
+                <div class="modal-footer">
+                    <a class="chaise-btn chaise-btn-danger" href="/">OK</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade in" style="z-index: 1040;"></div>
+</noscript>
