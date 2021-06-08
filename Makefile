@@ -194,12 +194,13 @@ HTML=login/index.html \
 # the minified files that need to be created
 MIN=$(DIST)/$(SHARED_JS_VENDOR_ASSET_MIN) \
 	$(DIST)/$(SHARED_JS_SOURCE_MIN) \
-	$(DIST)/$(RECORD_JS_SOURCE_MIN) \
 	$(DIST)/$(RECORDSET_JS_SOURCE_MIN) \
 	$(DIST)/$(RECORDEDIT_JS_SOURCE_MIN) \
 	$(DIST)/$(VIEWER_JS_SOURCE_MIN) \
 	$(DIST)/$(LOGIN_JS_SOURCE_MIN) \
-	$(DIST)/$(HELP_JS_SOURCE_MIN)
+	$(DIST)/$(HELP_JS_SOURCE_MIN) \
+	$(DIST)/record.bundle.js
+	# $(DIST)/$(RECORD_JS_SOURCE_MIN)
 
  DIST=dist
 
@@ -258,6 +259,7 @@ SHARED_JS_VENDOR_ASSET=$(JS)/vendor/angular-plotly.js \
 	$(COMMON)/vendor/angular-animate.min.js \
 	$(COMMON)/vendor/angular-scroll.min.js \
 	$(COMMON)/vendor/css-element-queries.js \
+	$(COMMON)/vendor/ResizeSensor.js \
 	$(JS)/vendor/ui-bootstrap-tpls-2.5.0.min.js \
 	$(JS)/vendor/select.js \
 	$(COMMON)/vendor/mask.min.js \
@@ -314,11 +316,17 @@ RECORD_JS_VENDOR_ASSET=
 
 RECORD_CSS_SOURCE=
 
+RECORD_WEBPACK_BUNDLE=$(DIST)/record.bundle.js
+
+$(DIST)/record.bundle.js: $(BUILD_VERSION)
+	$(info - running webpack)
+	./node_modules/.bin/webpack
+
 .make-record-includes: $(BUILD_VERSION)
 	$(info - creating .make-record-includes)
 	@> .make-record-includes
 	@$(call add_css_link,.make-record-includes,$(RECORD_CSS_SOURCE))
-	@$(call add_js_script, .make-record-includes,$(SHARED_JS_VENDOR_BASE) $(RECORD_JS_VENDOR_ASSET) $(DIST)/$(SHARED_JS_VENDOR_ASSET_MIN) $(JS_CONFIG) $(DIST)/$(SHARED_JS_SOURCE_MIN) $(DIST)/$(RECORD_JS_SOURCE_MIN))
+	$(call add_js_script, .make-record-includes,$(SHARED_JS_VENDOR_BASE) $(DIST)/$(SHARED_JS_VENDOR_ASSET_MIN) $(JS_CONFIG) $(DIST)/$(MAKEFILE_VAR) $(RECORD_WEBPACK_BUNDLE))
 	@$(call add_ermrestjs_script,.make-record-includes)
 
 record/index.html: record/index.html.in .make-record-includes

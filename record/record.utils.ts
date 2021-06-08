@@ -1,5 +1,6 @@
-(function() {
-    'use strict';
+import angular from 'angular';
+import { reactToAngularComponent } from 'Utils/react-to-angular';
+import Displayname from 'Components/displayname';
 
     angular.module('chaise.record')
 
@@ -11,8 +12,9 @@
     }])
 
     .factory('recordAppUtils',
-             ['constants', 'DataUtils', 'Errors', 'ErrorService', '$log', 'logService', 'messageMap', 'modalBox', '$q', 'recordsetDisplayModes', 'recordTableUtils', '$rootScope', 'UriUtils',
-             function (constants, DataUtils, Errors, ErrorService, $log, logService, messageMap, modalBox, $q, recordsetDisplayModes, recordTableUtils, $rootScope, UriUtils) {
+             ['constants', 'DataUtils', 'ERMrest', 'Errors', 'ErrorService', '$log', 'logService',
+             'messageMap', 'modalBox', '$q', 'recordsetDisplayModes', 'recordTableUtils', '$rootScope', 'UriUtils',
+             function (constants, DataUtils, ERMrest, Errors, ErrorService, $log, logService, messageMap, modalBox, $q, recordsetDisplayModes, recordTableUtils, $rootScope, UriUtils) {
 
         /**
          * returns true if we have free slots for requests.
@@ -125,7 +127,7 @@
          * @param  {Object} the extra information that we want to log with the main request
          * @returns {Promise} It will be resolved with Page object.
          */
-        function readMainEntity(isUpdate, logObj) {
+        function readMainEntity(isUpdate, logObj?) {
             var defer = $q.defer();
 
             // clear the value of citation, so we can fetch it again.
@@ -637,6 +639,6 @@
             pauseUpdateRecordPage: pauseUpdateRecordPage,
             resumeUpdateRecordPage: resumeUpdateRecordPage
         };
-    }]);
+    }])
 
-})();
+    .component('chaiseTitleBridge', reactToAngularComponent(Displayname));

@@ -1,8 +1,8 @@
-(function() {
-    'use strict';
+import angular from "angular";
 
 /* Configuration of the Record App */
-    angular.module('chaise.configure-record', ['chaise.config'])
+angular
+    .module('chaise.configure-record', ['chaise.config'])
 
     .constant('settings', {
         appName: "record",
@@ -12,12 +12,12 @@
         overrideExternalLinkBehavior: true
     })
 
-    .run(['$rootScope', function ($rootScope) {
+    .run(['$rootScope', function ($rootScope: any) {
         // When the configuration module's run block emits the `configuration-done` event, attach the app to the DOM
         $rootScope.$on("configuration-done", function () {
 
             angular.element(document).ready(function(){
-                angular.bootstrap(document.getElementById("record"), ["chaise.record"]);
+                angular.bootstrap(document.getElementById("record")!, ["chaise.record"]);
             });
         });
     }]);
@@ -48,7 +48,8 @@
         'chaise.recordcreate'
     ])
 
-    .config(['$compileProvider', '$cookiesProvider', '$logProvider', '$provide', '$uibTooltipProvider', 'ConfigUtilsProvider', function($compileProvider, $cookiesProvider, $logProvider, $provide, $uibTooltipProvider, ConfigUtilsProvider) {
+    .config(['$compileProvider', '$cookiesProvider', '$logProvider', '$provide', '$uibTooltipProvider', 'ConfigUtilsProvider',
+            function($compileProvider, $cookiesProvider, $logProvider, $provide, $uibTooltipProvider, ConfigUtilsProvider) {
         ConfigUtilsProvider.$get().configureAngular($compileProvider, $cookiesProvider, $logProvider, $uibTooltipProvider);
 
         $provide.decorator('$templateRequest', ['ConfigUtils', 'UriUtils', '$delegate', function (ConfigUtils, UriUtils, $delegate) {
@@ -116,7 +117,7 @@
 
                 $log.info("Reference: ", $rootScope.reference);
 
-                var logObj = {};
+                var logObj : any = {};
                 if (pcid) logObj.pcid = pcid;
                 if (ppid) logObj.ppid = ppid;
                 if (paction) logObj.paction = paction;
@@ -162,13 +163,13 @@
                 // requestModels is used to generate the secondary requests that the page needs.
                 $rootScope.requestModels = [];
                 activeList.requests.forEach(function (req) {
-                    var m = {
+                    var m : any = {
                         activeListModel: req,
                         processed: false
                     };
 
                     if (req.entityset || req.aggregate) {
-                        var extra = {
+                        var extra : any = {
                             source: req.column.compressedDataSource,
                             entity: req.column.isEntityMode,
                         };
@@ -308,4 +309,3 @@
         // This is to allow the dropdown button to open at the top/bottom depending on the space available
         UiUtils.setBootstrapDropdownButtonBehavior();
     }]);
-})();
