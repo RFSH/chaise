@@ -1,6 +1,8 @@
 import angular from 'angular';
 import { reactToAngularComponent } from 'Utils/react-to-angular';
 import Displayname from 'Components/displayname';
+import Counter from 'Components/counter';
+import { store } from 'Store/store';
 
     angular.module('chaise.record')
 
@@ -641,4 +643,25 @@ import Displayname from 'Components/displayname';
         };
     }])
 
-    .component('chaiseTitleBridge', reactToAngularComponent(Displayname));
+    .component('chaiseTitleBridge', reactToAngularComponent(Displayname))
+
+
+    .component('counterBridge', reactToAngularComponent(Counter))
+
+    .directive('counterChanger', [function () {
+        return {
+            restrict: 'E',
+            template: 'AngularJS: <button ng-click="increase()">increase</button> <span style="margin: 0 10px;"> <button ng-click="decrease()">decrease</button>',
+            link: function (scope : any, elem, attrs) {
+                store.subscribe(() => console.log(store.getState()))
+
+                scope.increase = function () {
+                    store.dispatch({ type: 'counter/increment' })
+                }
+
+                scope.decrease = function () {
+                    store.dispatch({ type: 'counter/decrement' })
+                }
+            }
+        }
+    }]);

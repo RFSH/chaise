@@ -121,6 +121,10 @@
                 <div class="main-container dynamic-padding" ng-class="{'initializing': !displayReady}">
                     <div class="main-body">
 
+                        <counter-bridge></counter-bridge>
+
+                        <counter-changer></counter-changer>
+
                         <!-- defined on $rootScope in run function -->
                         <record-display class="entity-container" column-models="columnModels" values="recordValues"
                             add-related-record="ctrl.addRelatedRecord(tableModel)" can-create-related="::ctrl.canCreateRelated(ref)"

@@ -31,10 +31,10 @@
 // import "Legacy/common/vendor/mask.min"
 // import "Legacy/common/vendor/spectrum/spectrum.min"
 
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 // shared js source
 import "Legacy/common/alerts"
-import "Legacy/common/authen"
 import "Legacy/common/authen"
 import "Legacy/common/bindHtmlUnsafe"
 import "Legacy/common/config"

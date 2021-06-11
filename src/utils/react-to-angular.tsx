@@ -1,6 +1,8 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 import angular from 'angular';
+import { store } from "Store/store"
+import { Provider } from 'react-redux';
 
 function toBindings(propTypes) {
   const bindings = {};
@@ -22,7 +24,12 @@ export function reactToAngularComponent(Component) {
     controller: /*@ngInject*/ function($element) {
       this.$onChanges = () => {
         const props = toProps(propTypes, this);
-        ReactDOM.render(<Component { ...props } />, $element[0]);
+        ReactDOM.render(
+          <Provider store={store}>
+            <Component { ...props } />
+          </Provider>, 
+          $element[0]
+        );
       };
       this.$onDestroy = () => ReactDOM.unmountComponentAtNode($element[0]);
     }

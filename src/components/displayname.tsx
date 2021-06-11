@@ -23,7 +23,7 @@ const Displayname: React.FC<DisplaynameProps> = (props: DisplaynameProps) => {
         link = props.reference.unfilteredReference.contextualize.compact.appLink;
     }
 
-    let displayname = props.displayname;
+    let displayname : any = props.displayname;
     if (props.reference && typeof displayname !== "object") {
         displayname = props.reference.displayname;
     }
@@ -39,7 +39,7 @@ const Displayname: React.FC<DisplaynameProps> = (props: DisplaynameProps) => {
         return <span>{displayname?.value}</span>
     }
 
-    if (addLink) {
+    if (addLink && typeof link === 'string') {
         return (
             <a href={link}>
                 {renderDisplayname()}
